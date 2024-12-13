@@ -66,7 +66,7 @@ export class SignupUpPageComponent {
         role: 'User'
       };
 
-      this.http.post<RegisterResponse>('http://localhost:5249/api/account/register', registerData)
+      this.http.post<RegisterResponse>('https://nethirebackend20241213133402.azurewebsites.net/api/account/register', registerData)
         .subscribe({
           next: (response) => {
             if (response.responseSuccess) {

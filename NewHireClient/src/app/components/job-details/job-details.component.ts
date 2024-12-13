@@ -62,7 +62,7 @@ export class JobDetailsComponent implements OnInit {
     const token = this.authService.getToken();
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     
-    this.http.get<ApiResponse<Job>>(`http://localhost:5249/api/Job/GetJob/${id}`, { headers })
+    this.http.get<ApiResponse<Job>>(`https://nethirebackend20241213133402.azurewebsites.net/api/Job/GetJob/${id}`, { headers })
       .subscribe({
         next: (response) => {
           this.job = response.data;

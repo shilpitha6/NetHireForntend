@@ -68,8 +68,8 @@ export class ApplicationListComponent implements OnInit {
     const jobId = this.router.url.split('/').pop() || '';
 
     const apiUrl = userRole === 'user' 
-      ? `http://localhost:5249/api/Application/user`
-      : `http://localhost:5249/api/Application/job/${jobId}`;
+      ? `https://nethirebackend20241213133402.azurewebsites.net/api/Application/user`
+      : `https://nethirebackend20241213133402.azurewebsites.net/api/Application/job/${jobId}`;
 
     this.http.get<ApiResponse<Application>>(apiUrl).subscribe({
       next: (response) => {

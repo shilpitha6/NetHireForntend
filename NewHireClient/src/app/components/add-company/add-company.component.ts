@@ -7,11 +7,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { NotificationService } from '../../services/notification.service';
 import { AuthService } from '../../services/auth.service';
 import { NotificationComponent } from '../notification/notification.component';
-
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-add-company',
   standalone: true,
-  imports: [ReactiveFormsModule, HttpClientModule, NotificationComponent],
+  imports: [ReactiveFormsModule, HttpClientModule, NotificationComponent, CommonModule],
   templateUrl: './add-company.component.html',
   styleUrl: './add-company.component.css'
 })
@@ -45,7 +45,7 @@ export class AddCompanyComponent implements OnInit {
       const token = this.authService.getToken();
       const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-      this.http.post('http://localhost:5249/api/Company/CreateCompany', this.companyForm.value, { headers })
+      this.http.post('https://nethirebackend20241213133402.azurewebsites.net/api/Company/CreateCompany', this.companyForm.value, { headers })
         .subscribe({
           next: (response: any) => {
             if (response.responseSuccess) {

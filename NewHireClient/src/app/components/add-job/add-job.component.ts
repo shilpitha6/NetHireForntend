@@ -113,8 +113,8 @@ export class AddJobComponent implements OnInit {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     
     const endpoint = this.authService.getUserRole() === 'company' 
-      ? 'http://localhost:5249/api/Company/GetCompaniesByUser'
-      : 'http://localhost:5249/api/Company/GetCompanies';
+      ? 'https://nethirebackend20241213133402.azurewebsites.net/api/Company/GetCompaniesByUser'
+      : 'https://nethirebackend20241213133402.azurewebsites.net/api/Company/GetCompanies';
 
     this.http.get<ApiResponse>(endpoint, { headers })
       .subscribe({
@@ -145,7 +145,7 @@ export class AddJobComponent implements OnInit {
       formData.applyType = ApplyType[formData.applyType];
       formData.status = JobStatus[formData.status];
 
-      this.http.post('http://localhost:5249/api/Job/CreateJob', formData, { headers })
+      this.http.post('https://nethirebackend20241213133402.azurewebsites.net/api/Job/CreateJob', formData, { headers })
         .subscribe({
           next: (response: any) => {
             if (response.responseSuccess) {

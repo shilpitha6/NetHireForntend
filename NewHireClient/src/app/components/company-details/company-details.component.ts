@@ -75,7 +75,7 @@ export class CompanyDetailsComponent implements OnInit {
   private loadCompany(id: string): void {
     const token = this.authService.getToken();
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    this.http.get<ApiResponse<Company>>(`http://localhost:5249/api/Company/GetCompany/${id}`, { headers })
+    this.http.get<ApiResponse<Company>>(`https://nethirebackend20241213133402.azurewebsites.net/api/Company/GetCompany/${id}`, { headers })
       .subscribe({
         next: (response) => {
           this.company = response.data;
@@ -92,7 +92,7 @@ export class CompanyDetailsComponent implements OnInit {
     const token = this.authService.getToken();
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     
-    this.http.get<ApiResponse<Job[]>>(`http://localhost:5249/api/Job/GetJobsByCompanyId?companyId=${companyId}`, { headers })
+    this.http.get<ApiResponse<Job[]>>(`https://nethirebackend20241213133402.azurewebsites.net/api/Job/GetJobsByCompanyId?companyId=${companyId}`, { headers })
       .subscribe({
         next: (response) => {
           this.jobs = response.data;

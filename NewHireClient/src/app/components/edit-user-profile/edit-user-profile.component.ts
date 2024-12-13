@@ -76,7 +76,7 @@ export class EditUserProfileComponent implements OnInit {
     const token = this.authService.getToken();
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-    this.http.get<ApiResponse<ContactInfo>>('http://localhost:5249/api/ContactInfo/GetContactInfoByUserId', { headers })
+    this.http.get<ApiResponse<ContactInfo>>('https://nethirebackend20241213133402.azurewebsites.net/api/ContactInfo/GetContactInfoByUserId', { headers })
       .subscribe({
         next: (response) => {
           if (response.data) {
@@ -114,7 +114,7 @@ export class EditUserProfileComponent implements OnInit {
         zipCode: this.contactForm.value.zipCode
       };
 
-      this.http.put<ApiResponse<ContactInfo>>('http://localhost:5249/api/ContactInfo/UpdateContactInfo', formData, { headers })
+      this.http.put<ApiResponse<ContactInfo>>('https://nethirebackend20241213133402.azurewebsites.net/api/ContactInfo/UpdateContactInfo', formData, { headers })
         .subscribe({
           next: (response) => {
             if (response.responseSuccess) {

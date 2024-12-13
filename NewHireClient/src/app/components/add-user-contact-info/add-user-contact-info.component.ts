@@ -53,7 +53,7 @@ export class AddUserContactInfoComponent implements OnInit {
       const token = this.authService.getToken();
       const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-      this.http.post('http://localhost:5249/api/ContactInfo/AddContactInfo', this.contactForm.value, { headers })
+      this.http.post('https://nethirebackend20241213133402.azurewebsites.net/api/ContactInfo/AddContactInfo', this.contactForm.value, { headers })
         .subscribe({
           next: (response: any) => {
             if (response.responseSuccess) {

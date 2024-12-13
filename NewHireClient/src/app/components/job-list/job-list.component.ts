@@ -57,8 +57,8 @@ export class JobListComponent implements OnInit {
     
     // Choose endpoint based on user role
     const endpoint = this.authService.getUserRole() === 'company' 
-      ? 'http://localhost:5249/api/Job/GetJobsByUserId'
-      : 'http://localhost:5249/api/Job/GetJobs';
+      ? 'https://nethirebackend20241213133402.azurewebsites.net/api/Job/GetJobsByUserId'
+      : 'https://nethirebackend20241213133402.azurewebsites.net/api/Job/GetJobs';
 
     this.http.get<ApiResponse>(endpoint, { headers }).subscribe(
       response => this.jobs = response.data,

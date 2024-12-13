@@ -6,6 +6,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { NotificationService } from '../../services/notification.service';
 interface LoginResponse {
   responseSuccess: boolean;
   status: number;
@@ -67,7 +68,8 @@ export class LoginPageComponent {
     private formbuilder: FormBuilder,
     private http: HttpClient,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private notificationService: NotificationService
   ) { }
 
   ngOnInit(): void {
@@ -82,7 +84,7 @@ export class LoginPageComponent {
       password: this.loginForm.value.password
     };
 
-    this.http.post<LoginResponse>("http://localhost:5249/api/account/login", loginData)
+    this.http.post<LoginResponse>("https://nethirebackend20241213133402.azurewebsites.net/api/account/login", loginData)
       .subscribe({
         next: (response) => {
           if (response.responseSuccess && response.data) {
@@ -104,7 +106,7 @@ export class LoginPageComponent {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     
     this.http.get<ContactInfoResponse>(
-      "http://localhost:5249/api/ContactInfo/GetContactInfoByUserId",
+      "https://nethirebackend20241213133402.azurewebsites.net/api/ContactInfo/GetContactInfoByUserId",
       { headers }
     ).subscribe({
       next: (response) => {
@@ -124,7 +126,7 @@ export class LoginPageComponent {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     
     this.http.get<CompanyResponse>(
-      "http://localhost:5249/api/Company/GetCompaniesByUser",
+      "https://nethirebackend20241213133402.azurewebsites.net/api/Company/GetCompaniesByUser",
       { headers }
     ).subscribe({
       next: (response) => {

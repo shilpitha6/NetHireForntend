@@ -70,8 +70,8 @@ export class CompanyListComponent implements OnInit {
 
   private loadCompanies() {
     const endpoint = this.authService.getUserRole() === 'company' 
-      ? 'http://localhost:5249/api/Company/GetCompaniesByUser'
-      : 'http://localhost:5249/api/Company/GetCompanies';
+      ? 'https://nethirebackend20241213133402.azurewebsites.net/api/Company/GetCompaniesByUser'
+      : 'https://nethirebackend20241213133402.azurewebsites.net/api/Company/GetCompanies';
     const token = this.authService.getToken();
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     this.http.get<ApiResponse>(endpoint, { headers }).subscribe(

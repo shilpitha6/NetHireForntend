@@ -10,7 +10,7 @@ export class EnvService {
   constructor() {
     // Load environment variables
     this.env = {
-      apiUrl: process.env['API_URL'] || 'http://localhost:5249/api'
+      apiUrl: process.env['API_URL'] || 'https://nethirebackend20241213133402.azurewebsites.net/api'
     };
   }
 

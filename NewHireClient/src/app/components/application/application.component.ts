@@ -76,7 +76,7 @@ export class ApplicationComponent implements OnInit {
     const token = this.authService.getToken();
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-    this.http.get<ApiResponse<ContactInfo>>('http://localhost:5249/api/ContactInfo/GetContactInfoByUserId', { headers })
+    this.http.get<ApiResponse<ContactInfo>>('https://nethirebackend20241213133402.azurewebsites.net/api/ContactInfo/GetContactInfoByUserId', { headers })
       .subscribe({
         next: (response) => {
           if (response.data) {
@@ -118,7 +118,7 @@ export class ApplicationComponent implements OnInit {
       const token = this.authService.getToken();
       const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-      this.http.post('http://localhost:5249/api/Application/' + this.jobId, this.applicationForm.value, { headers })
+      this.http.post('https://nethirebackend20241213133402.azurewebsites.net/api/Application/' + this.jobId, this.applicationForm.value, { headers })
         .subscribe({
           next: (response: any) => {
             if (response.responseSuccess) {
