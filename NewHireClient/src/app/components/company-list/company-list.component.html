@@ -1,0 +1,106 @@
+<div class="container mx-auto p-4">
+  <div class="mb-4">
+    <button *ngIf="userRole === 'company'"  routerLink="/add-company"
+            class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
+      Add New Company
+    </button>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div *ngFor="let company of companies" 
+         class="bg-white rounded-lg shadow p-4">
+      <h3 class="text-lg font-semibold">{{company.companyName}}</h3>
+      <div class="space-y-2 mt-2">
+        <p class="text-gray-600"><span class="font-medium">CEO:</span> {{company.ceo}}</p>
+        <p class="text-gray-600"><span class="font-medium">Industry:</span> {{company.industry}}</p>
+        <p class="text-gray-600"><span class="font-medium">Founded:</span> {{company.foundedYear}}</p>
+        <p class="text-gray-600"><span class="font-medium">Website:</span> 
+          <a href="{{company.website}}" target="_blank" class="text-blue-500 hover:underline">{{company.website}}</a>
+        </p>
+        <p class="text-gray-600"><span class="font-medium">Headquarters:</span> {{company.headquarters}}</p>
+        <p class="text-gray-600"><span class="font-medium">Revenue:</span> ${{company.revenue}}M</p>
+        <p class="text-gray-600"><span class="font-medium">Company Size:</span> {{company.companySize}} employees</p>
+      </div>
+      <button *ngIf="userRole === 'company'" 
+              (click)="openEditDialog(company)"
+              class="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+        Edit
+      </button>
+      <button 
+              routerLink="/company-details/{{company.companyId}}"
+              class="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+        View Details
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="isEditSidebarOpen" 
+       class="fixed inset-y-0 right-0 w-96 bg-gray-50 shadow-lg transform transition-transform duration-300 ease-in-out"
+       [ngClass]="{'translate-x-0': isEditSidebarOpen, 'translate-x-full': !isEditSidebarOpen}">
+    
+    <div class="p-6">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-bold">Edit Company</h2>
+        <button (click)="closeSidebar()" 
+                class="text-gray-500 hover:text-gray-700">
+          <span class="text-2xl">&times;</span>
+        </button>
+      </div>
+
+      <form [formGroup]="editForm" (ngSubmit)="onSubmit()" class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Company Name</label>
+          <input formControlName="companyName" 
+                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700">CEO</label>
+          <input formControlName="ceo" 
+                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Founded Year</label>
+          <input formControlName="foundedYear" type="number"
+                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Website</label>
+          <input formControlName="website" type="url"
+                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Headquarters</label>
+          <input formControlName="headquarters"
+                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Revenue (millions)</label>
+          <input formControlName="revenue" type="number" step="0.01"
+                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Company Size</label>
+          <input formControlName="companySize" type="number"
+                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Industry</label>
+          <input formControlName="industry"
+                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+        </div>
+
+        <button type="submit" 
+                class="w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+          Save Changes
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

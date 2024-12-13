@@ -1,35 +1,92 @@
 import { Component } from '@angular/core';
-import { FormGroup, FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { NotificationService } from '../../services/notification.service';
+import { NotificationComponent } from '../../components/notification/notification.component';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+
+
+interface RegisterResponse {
+  responseSuccess: boolean;
+  status: number;
+  id: number;
+  message: string;
+  data: any;
+}
 
 @Component({
   selector: 'app-signup-up-page',
   standalone: true,
-  imports: [ReactiveFormsModule, HttpClientModule],
+  imports: [ReactiveFormsModule, HttpClientModule, NotificationComponent, CommonModule, RouterModule],
   templateUrl: './signup-up-page.component.html',
   styleUrl: './signup-up-page.component.css'
 })
 export class SignupUpPageComponent {
+  public signUpForm!: FormGroup;
 
-  public signUpForm !: FormGroup
-  constructor(private formBuilder: FormBuilder, private http: HttpClient, private router: Router) { }
+  constructor(
+    private formBuilder: FormBuilder, 
+    private http: HttpClient, 
+    private router: Router,
+    private notificationService: NotificationService
+  ) { }
 
   ngOnInit(): void {
     this.signUpForm = this.formBuilder.group({
-      email: [""],
-      password: [""]
-    })
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required],
+      confirmPassword: ['', Validators.required]
+    }, {
+      validators: this.passwordMatchValidator
+    });
   }
 
-  signUp(){
-    this.http.post<any>("http://localhost:3000/signupUsersList",this.signUpForm.value)
-    .subscribe(res=>{
-      alert('SIGNIN SUCCESFUL');
-      this.signUpForm.reset()
-      this.router.navigate(["login"])
-    },err=>{
-      alert("Something went wrong")
-    })
+  private passwordMatchValidator(form: FormGroup) {
+    const password = form.get('password');
+    const confirmPassword = form.get('confirmPassword');
+    
+    if (password?.value !== confirmPassword?.value) {
+      confirmPassword?.setErrors({ passwordMismatch: true });
+    } else {
+      confirmPassword?.setErrors(null);
+    }
+  }
+
+  signUp() {
+    if (this.signUpForm.valid) {
+      const registerData = {
+        firstName: this.signUpForm.value.firstName,
+        lastName: this.signUpForm.value.lastName,
+        email: this.signUpForm.value.email,
+        password: this.signUpForm.value.password,
+        role: 'User'
+      };
+
+      this.http.post<RegisterResponse>('http://localhost:5249/api/account/register', registerData)
+        .subscribe({
+          next: (response) => {
+            if (response.responseSuccess) {
+              this.notificationService.show('Registration successful! Please login.', 'success');
+              this.router.navigate(['/login']);
+            } else {
+              this.notificationService.show(response.message || 'Registration failed', 'error');
+            }
+          },
+          error: (error) => {
+            this.notificationService.show(error.error.message || 'Something went wrong', 'error');
+          }
+        });
+    } else {
+      Object.keys(this.signUpForm.controls).forEach(key => {
+        const control = this.signUpForm.get(key);
+        if (control?.invalid) {
+          control.markAsTouched();
+        }
+      });
+    }
   }
 }

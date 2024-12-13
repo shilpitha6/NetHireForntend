@@ -1,0 +1,76 @@
+<div class="container mx-auto px-4 mt-8">
+  <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+    <div class="bg-gray-100 px-6 py-4">
+      <h2 class="text-2xl font-bold text-gray-800">{{ company?.companyName }}</h2>
+    </div>
+    <div class="p-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Left Column -->
+        <div>
+          <dl class="space-y-4">
+            <div class="grid grid-cols-3">
+              <dt class="font-semibold text-gray-600">CEO</dt>
+              <dd class="col-span-2">{{ company?.ceo }}</dd>
+            </div>
+            <div class="grid grid-cols-3">
+              <dt class="font-semibold text-gray-600">Founded</dt>
+              <dd class="col-span-2">{{ company?.foundedYear }}</dd>
+            </div>
+            <div class="grid grid-cols-3">
+              <dt class="font-semibold text-gray-600">Website</dt>
+              <dd class="col-span-2">
+                <a [href]="company?.website" target="_blank" class="text-blue-600 hover:text-blue-800">
+                  {{ company?.website }}
+                </a>
+              </dd>
+            </div>
+            <div class="grid grid-cols-3">
+              <dt class="font-semibold text-gray-600">Headquarters</dt>
+              <dd class="col-span-2">{{ company?.headquarters }}</dd>
+            </div>
+          </dl>
+        </div>
+        <!-- Right Column -->
+        <div>
+          <dl class="space-y-4">
+            <div class="grid grid-cols-3">
+              <dt class="font-semibold text-gray-600">Revenue</dt>
+              <dd class="col-span-2">${{ company?.revenue }} M</dd>
+            </div>
+            <div class="grid grid-cols-3">
+              <dt class="font-semibold text-gray-600">Company Size</dt>
+              <dd class="col-span-2">{{ company?.companySize }} employees</dd>
+            </div>
+            <div class="grid grid-cols-3">
+              <dt class="font-semibold text-gray-600">Industry</dt>
+              <dd class="col-span-2">{{ company?.industry }}</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div *ngIf="!company" class="flex flex-col items-center justify-center mt-8">
+    <p class="text-gray-600 mb-4">Company data status: {{ company === null ? 'null' : company === undefined ? 'undefined' : 'other' }}</p>
+    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+  </div>
+  <br>
+  <div class="mt-8 bg-white rounded-lg shadow-lg overflow-hidden">
+    <div class="bg-gray-100 px-6 py-4">
+      <h2 class="text-2xl font-bold text-gray-800">Available Jobs</h2>
+    </div>
+    <div class="p-6">
+      <div class="space-y-4">
+        <div *ngFor="let job of jobs" 
+             class="border rounded-lg p-4 hover:bg-gray-50 transition-colors duration-200">
+          <a [routerLink]="['/job-details', job.jobId]"
+             class="block text-xl font-semibold text-gray-800 mb-2 cursor-pointer">{{ job.title }}</a>
+          <p class="text-gray-600">{{ job.description }}</p>
+          <p class="text-gray-600">{{ job.location }}</p>
+          <p class="text-gray-600">{{ job.salary }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

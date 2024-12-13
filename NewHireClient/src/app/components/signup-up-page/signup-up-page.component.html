@@ -7,28 +7,53 @@
     <form class="mt-8 space-y-6" [formGroup]="signUpForm" (ngSubmit)="signUp()">
       <div class="space-y-4">
         <div>
-          <label for="name" class="block text-sm font-medium text-gray-700">Full Name</label>
-          <input formControlName="name" required type="text" 
+          <label for="firstName" class="block text-sm font-medium text-gray-700">First Name</label>
+          <input formControlName="firstName" required type="text" 
                  class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+          <div *ngIf="signUpForm.get('firstName')?.touched && signUpForm.get('firstName')?.invalid" class="text-red-500 text-sm mt-1">
+            First name is required
+          </div>
         </div>
+
+        <div>
+          <label for="lastName" class="block text-sm font-medium text-gray-700">Last Name</label>
+          <input formControlName="lastName" required type="text" 
+                 class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+          <div *ngIf="signUpForm.get('lastName')?.touched && signUpForm.get('lastName')?.invalid" class="text-red-500 text-sm mt-1">
+            Last name is required
+          </div>
+        </div>
+
         <div>
           <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
           <input formControlName="email" required type="email" 
                  class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+          <div *ngIf="signUpForm.get('email')?.touched && signUpForm.get('email')?.invalid" class="text-red-500 text-sm mt-1">
+            Please enter a valid email address
+          </div>
         </div>
+
         <div>
           <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
           <input formControlName="password" type="password" 
                  class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+          <div *ngIf="signUpForm.get('password')?.touched && signUpForm.get('password')?.invalid" class="text-red-500 text-sm mt-1">
+            Password is required
+          </div>
         </div>
+
         <div>
           <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirm Password</label>
           <input formControlName="confirmPassword" type="password" 
                  class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+          <div *ngIf="signUpForm.get('confirmPassword')?.touched && signUpForm.get('confirmPassword')?.errors?.['passwordMismatch']" class="text-red-500 text-sm mt-1">
+            Passwords do not match
+          </div>
         </div>
       </div>
 
-      <button class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+      <button type="submit" [disabled]="signUpForm.invalid" 
+              class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed">
         Sign Up
       </button>
       

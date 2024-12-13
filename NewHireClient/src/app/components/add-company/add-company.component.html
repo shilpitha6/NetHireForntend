@@ -1,0 +1,95 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-2xl w-full space-y-8">
+    <h1 class="text-3xl font-bold text-center text-gray-900">
+      Company Information
+    </h1>
+    <h3 class="text-xl font-bold text-center text-gray-900">
+      Please fill out your company details to continue.
+    </h3>
+
+    <form [formGroup]="companyForm" (ngSubmit)="onSubmit()" class="mt-8 space-y-6">
+      <div class="bg-white p-8 rounded-lg shadow">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Company Name -->
+          <div>
+            <label for="companyName" class="block text-sm font-medium text-gray-700">Company Name*</label>
+            <input type="text" id="companyName" formControlName="companyName"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+            <div *ngIf="companyForm.get('companyName')?.touched && companyForm.get('companyName')?.invalid" 
+                 class="text-red-500 text-sm mt-1">Company name is required</div>
+          </div>
+
+          <!-- CEO -->
+          <div>
+            <label for="ceo" class="block text-sm font-medium text-gray-700">CEO*</label>
+            <input type="text" id="ceo" formControlName="ceo"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+            <div *ngIf="companyForm.get('ceo')?.touched && companyForm.get('ceo')?.invalid" 
+                 class="text-red-500 text-sm mt-1">CEO name is required</div>
+          </div>
+
+          <!-- Founded Year -->
+          <div>
+            <label for="foundedYear" class="block text-sm font-medium text-gray-700">Founded Year*</label>
+            <input type="number" id="foundedYear" formControlName="foundedYear"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+            <div *ngIf="companyForm.get('foundedYear')?.touched && companyForm.get('foundedYear')?.invalid" 
+                 class="text-red-500 text-sm mt-1">Please enter a valid year</div>
+          </div>
+
+          <!-- Website -->
+          <div>
+            <label for="website" class="block text-sm font-medium text-gray-700">Website*</label>
+            <input type="url" id="website" formControlName="website"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+            <div *ngIf="companyForm.get('website')?.touched && companyForm.get('website')?.invalid" 
+                 class="text-red-500 text-sm mt-1">Please enter a valid website URL</div>
+          </div>
+
+          <!-- Headquarters -->
+          <div>
+            <label for="headquarters" class="block text-sm font-medium text-gray-700">Headquarters*</label>
+            <input type="text" id="headquarters" formControlName="headquarters"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+            <div *ngIf="companyForm.get('headquarters')?.touched && companyForm.get('headquarters')?.invalid" 
+                 class="text-red-500 text-sm mt-1">Headquarters location is required</div>
+          </div>
+
+          <!-- Revenue -->
+          <div>
+            <label for="revenue" class="block text-sm font-medium text-gray-700">Annual Revenue (USD)*</label>
+            <input type="number" id="revenue" formControlName="revenue"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+            <div *ngIf="companyForm.get('revenue')?.touched && companyForm.get('revenue')?.invalid" 
+                 class="text-red-500 text-sm mt-1">Please enter a valid revenue amount</div>
+          </div>
+
+          <!-- Company Size -->
+          <div>
+            <label for="companySize" class="block text-sm font-medium text-gray-700">Number of Employees*</label>
+            <input type="number" id="companySize" formControlName="companySize"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+            <div *ngIf="companyForm.get('companySize')?.touched && companyForm.get('companySize')?.invalid" 
+                 class="text-red-500 text-sm mt-1">Please enter a valid company size</div>
+          </div>
+
+          <!-- Industry -->
+          <div>
+            <label for="industry" class="block text-sm font-medium text-gray-700">Industry*</label>
+            <input type="text" id="industry" formControlName="industry"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+            <div *ngIf="companyForm.get('industry')?.touched && companyForm.get('industry')?.invalid" 
+                 class="text-red-500 text-sm mt-1">Industry is required</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex justify-center">
+        <button type="submit" [disabled]="!companyForm.valid"
+          class="w-full md:w-auto px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed">
+          Submit
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

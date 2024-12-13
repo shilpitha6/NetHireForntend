@@ -4,7 +4,8 @@ import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http'
 import { Router } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
-
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 interface LoginResponse {
   responseSuccess: boolean;
   status: number;
@@ -43,10 +44,18 @@ interface ContactInfoResponse {
   } | null;
 }
 
+interface CompanyResponse {
+  responseSuccess: boolean;
+  status: number;
+  id: number;
+  message: string;
+  data: any[]; // Array of companies
+}
+
 @Component({
   selector: 'app-login-page',
   standalone: true,
-  imports: [ReactiveFormsModule, HttpClientModule],
+  imports: [ReactiveFormsModule, HttpClientModule, CommonModule, RouterModule],
   templateUrl: './login-page.component.html',
   styleUrl: './login-page.component.css'
 })
@@ -79,7 +88,7 @@ export class LoginPageComponent {
           if (response.responseSuccess && response.data) {
             this.authService.login(response.data.accessToken, response.data.role);
             if (response.data.role.toLowerCase() === 'company') {
-              this.router.navigate(['/company-home']);
+              this.checkCompanyExists(response.data.accessToken);
             } else {
               this.checkUserContactInfo(response.data.accessToken);
             }
@@ -107,6 +116,26 @@ export class LoginPageComponent {
       },
       error: (error) => {
         this.router.navigate(['/add-user-contact-info']);
+      }
+    });
+  }
+
+  private checkCompanyExists(token: string) {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    
+    this.http.get<CompanyResponse>(
+      "http://localhost:5249/api/Company/GetCompaniesByUser",
+      { headers }
+    ).subscribe({
+      next: (response) => {
+        if (response.responseSuccess && response.data && response.data.length > 0) {
+          this.router.navigate(['/company-home']);
+        } else {
+          this.router.navigate(['/add-company']);
+        }
+      },
+      error: (error) => {
+        this.router.navigate(['/add-company']);
       }
     });
   }

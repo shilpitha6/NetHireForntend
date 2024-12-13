@@ -1,0 +1,60 @@
+<div class="container mx-auto px-4 py-8" *ngIf="job">
+  <div class="bg-white rounded-lg shadow-lg p-6">
+    <!-- Job Header -->
+    <div class="mb-6">
+      <h1 class="text-3xl font-bold text-gray-900">{{job.title}}</h1>
+      <button [routerLink]="['/company-details', job.companyId]" class="text-lg text-gray-600">{{job.company?.companyName}}</button>
+    </div>
+
+    <!-- Job Details Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+      <div class="space-y-4">
+        <div>
+          <h3 class="text-lg font-semibold text-gray-700">Location</h3>
+          <p class="text-gray-600">{{job.location}}</p>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold text-gray-700">Salary</h3>
+          <p class="text-gray-600">${{job.salary | number}}/year</p>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold text-gray-700">Job Type</h3>
+          <p class="text-gray-600">{{job.jobType}}</p>
+        </div>
+      </div>
+      
+      <div class="space-y-4">
+        <div>
+          <h3 class="text-lg font-semibold text-gray-700">Work Settings</h3>
+          <p class="text-gray-600">{{job.workSettings}}</p>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold text-gray-700">Travel Requirement</h3>
+          <p class="text-gray-600">{{job.travelRequirement}}</p>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold text-gray-700">Application Type</h3>
+          <p class="text-gray-600">{{job.applyType}}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Job Description -->
+    <div>
+      <h2 class="text-2xl font-bold text-gray-900 mb-4">Job Description</h2>
+      <p class="text-gray-700 whitespace-pre-line">{{job.description}}</p>
+    </div>
+
+    <!-- Apply Button -->
+    <div class="mt-8 flex justify-center" *ngIf="role === 'user'">
+      <button routerLink="/application/{{job.jobId}}" class="px-6 py-3 bg-indigo-600 text-white font-medium rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+        Apply Now
+      </button>
+    </div>
+    <div class="mt-8 flex justify-center" *ngIf="role === 'company'">
+      <button routerLink="/application-list/{{job.jobId}}" class="px-6 py-3 bg-indigo-600 text-white font-medium rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+        View Applications
+      </button>
+    </div>
+  </div>
+</div>

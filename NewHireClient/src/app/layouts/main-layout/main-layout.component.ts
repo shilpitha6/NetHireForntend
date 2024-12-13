@@ -13,7 +13,9 @@ import { Router } from '@angular/router';
       <header class="bg-white shadow-sm">
         <nav class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div class="flex items-center">
-            <a routerLink="/" class="flex items-center space-x-2">
+            <a [routerLink]="(authService.userRole$ | async) === 'user' ? '/user-home' : 
+                           (authService.userRole$ | async) === 'company' ? '/company-home' : '/'" 
+               class="flex items-center space-x-2">
               <h1 class="text-xl font-semibold text-gray-900">NetHire</h1>
             </a>
           </div>
@@ -23,7 +25,6 @@ import { Router } from '@angular/router';
               <a routerLink="/jobs" class="text-gray-600 hover:text-gray-900">Jobs</a>
               <a routerLink="/companies" class="text-gray-600 hover:text-gray-900">Companies</a>
               <a routerLink="/my-applications" class="text-gray-600 hover:text-gray-900">My Applications</a>
-              <a routerLink="/profile" class="text-gray-600 hover:text-gray-900">Profile</a>
             </ng-container>
             <ng-container *ngIf="(authService.userRole$ | async) === 'company'">
               <a routerLink="/companies" class="text-gray-600 hover:text-gray-900">Companies</a>
