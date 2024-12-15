@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../../services/auth.service'; // Assuming you have an auth service
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router'; 
+import { isPlatformBrowser } from '@angular/common';
 
 // Add these interfaces
 interface Company {
@@ -45,13 +46,16 @@ export class CompanyListComponent implements OnInit {
   editForm: FormGroup;
   currentCompanyId: number | null = null;
   userRole: string | null;
+  isPlatformBrowser: boolean;
 
   constructor(
     private http: HttpClient,
     private authService: AuthService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    @Inject(PLATFORM_ID) platformId: Object
   ) {
     this.userRole = this.authService.getUserRole();
+    this.isPlatformBrowser = isPlatformBrowser(platformId);
     this.editForm = this.fb.group({
       companyName: [''],
       industry: [''],
@@ -65,7 +69,9 @@ export class CompanyListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadCompanies();
+    if (this.isPlatformBrowser) {
+      this.loadCompanies();
+    }
   }
 
   private loadCompanies() {

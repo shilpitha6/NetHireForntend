@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Injectable, PLATFORM_ID, Inject } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -7,32 +8,46 @@ import { BehaviorSubject } from 'rxjs';
 export class AuthService {
   private isAuthenticated$$ = new BehaviorSubject<boolean>(false);
   private userRole$$ = new BehaviorSubject<string | null>(null);
+  private isBrowser: boolean;
 
-  // Public observables that components can subscribe to
   public isAuthenticated$ = this.isAuthenticated$$.asObservable();
   public userRole$ = this.userRole$$.asObservable();
 
-  constructor() {}
+  constructor(@Inject(PLATFORM_ID) platformId: Object) {
+    this.isBrowser = isPlatformBrowser(platformId);
+  }
+
+  private getStorage(key: string): string | null {
+    if (this.isBrowser) {
+      return sessionStorage.getItem(key);
+    }
+    return null;
+  }
+
+  private setStorage(key: string, value: string): void {
+    if (this.isBrowser) {
+      sessionStorage.setItem(key, value);
+    }
+  }
+
+  private removeStorage(key: string): void {
+    if (this.isBrowser) {
+      sessionStorage.removeItem(key);
+    }
+  }
 
   login(token: string, role: string) {
-    // Store auth data in sessionStorage
-    sessionStorage.setItem('token', token);
-    sessionStorage.setItem('userRole', role.toLowerCase());
-    
-    // Update the auth state observables
+    this.setStorage('token', token);
+    this.setStorage('userRole', role.toLowerCase());
     this.isAuthenticated$$.next(true);
     this.userRole$$.next(role.toLowerCase());
   }
 
   initAuthState() {
-    // Check for token in sessionStorage
-    const token = sessionStorage.getItem('token');
+    const token = this.getStorage('token');
     if (token) {
-      // Update the auth state observables
       this.isAuthenticated$$.next(true);
-      
-      // Also restore the user role if you store it
-      const role = sessionStorage.getItem('userRole');
+      const role = this.getStorage('userRole');
       if (role) {
         this.userRole$$.next(role.toLowerCase());
       }
@@ -40,21 +55,17 @@ export class AuthService {
   }
 
   logout() {
-    // Clear sessionStorage on logout
-    sessionStorage.removeItem('token');
-    sessionStorage.removeItem('userRole');
+    this.removeStorage('token');
+    this.removeStorage('userRole');
     this.isAuthenticated$$.next(false);
     this.userRole$$.next(null);
   }
 
-  // Helper method to get the current token (useful for HTTP interceptors)
   getToken(): string | null {
-    return sessionStorage.getItem('token');
+    return this.getStorage('token');
   }
 
   getUserRole(): 'user' | 'company' | null {
-    // Implement your logic to get the user's role
-    // This could be from localStorage, a state management solution, or an API call
-    return sessionStorage.getItem('userRole') as 'user' | 'company' | null;
+    return this.getStorage('userRole') as 'user' | 'company' | null;
   }
 } 

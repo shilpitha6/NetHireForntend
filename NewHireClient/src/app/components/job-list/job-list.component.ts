@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../../services/auth.service';
 import { RouterModule } from '@angular/router';
+import { isPlatformBrowser } from '@angular/common';
+import { PLATFORM_ID, Inject } from '@angular/core';
 
 interface Job {
   jobId: string;
@@ -42,27 +44,29 @@ export class JobListComponent implements OnInit {
 
   constructor(
     private http: HttpClient,
-    private authService: AuthService
+    private authService: AuthService,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.userRole = this.authService.getUserRole();
   }
 
   ngOnInit() {
-    this.loadJobs();
+    if (isPlatformBrowser(this.platformId)) {
+      this.loadJobs();
+    }
   }
 
   private loadJobs() {
     const token = this.authService.getToken();
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     
-    // Choose endpoint based on user role
     const endpoint = this.authService.getUserRole() === 'company' 
       ? 'https://nethirebackend20241213133402.azurewebsites.net/api/Job/GetJobsByUserId'
       : 'https://nethirebackend20241213133402.azurewebsites.net/api/Job/GetJobs';
 
-    this.http.get<ApiResponse>(endpoint, { headers }).subscribe(
-      response => this.jobs = response.data,
-      error => console.error('Error fetching jobs:', error)
-    );
+    this.http.get<ApiResponse>(endpoint, { headers }).subscribe({
+      next: (response) => this.jobs = response.data,
+      error: (error) => console.error('Error fetching jobs:', error)
+    });
   }
 }
